@@ -1,0 +1,8 @@
+Reputation = exp
+	You gain rep by selling items
+	Lose rep when you can't sell the items the customer wants
+
+6-10 customers per day * rep factor
+1-2 unique customers per day * rep factor
+
+Stock up on supplies / what to sell end of every day

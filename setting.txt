@@ -1,0 +1,2 @@
+pet shopkeeper
+Sells hero esk items like potions, gear, and other things
