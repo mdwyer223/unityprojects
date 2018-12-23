@@ -22,22 +22,10 @@ public class Player_Controller : MonoBehaviour {
         horiz_move = Input.GetAxisRaw("Horizontal") * speed;
         vert_move = Input.GetAxisRaw("Vertical");
 
-        Debug.Log(horiz_move);
-        Debug.Log(vert_move);
-
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
-            if(jump_key_up)
-            {
-                double_jump = true;
-            }
-            jump_key_up = false;
-        }
-
-        if (Input.GetButtonUp("Jump"))
-        {
-            jump_key_up = true;
+            double_jump = true;
         }
 
     }
