@@ -1,0 +1,10 @@
+TODO:
+
+	Start menu
+	Death Menu
+	Make more playable levels
+	Make Bill (animations and shit)
+	Scene transition
+	Make a projectile
+	Make an enemy
+	Dynamically load the player into scenes and the camera
