@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class Player_Movement: MonoBehaviour
 {
     [SerializeField] private float m_JumpForce = 400f;                          // Amount of force added when the player jumps.
+    [SerializeField] private float m_DashForce = 50f;                           // Amount of force added when the palyer dashes.
     [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;          // Amount of maxSpeed applied to crouching movement. 1 = 100%
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
     [SerializeField] private bool m_AirControl = false;                         // Whether or not a player can steer while jumping;
@@ -19,6 +20,10 @@ public class Player_Movement: MonoBehaviour
     private bool m_FacingRight = true;  // For determining which way the player is currently facing.
     private Vector3 m_Velocity = Vector3.zero;
     private bool double_jump_used = false;
+    private bool dash_used = false;
+    private float dash_velo = 0;
+    private int dash_timer = 0;
+    private int dash_time = 3;
     private int double_jump_delay = 3;
     private int double_jump_timer = 0;
 
@@ -64,7 +69,7 @@ public class Player_Movement: MonoBehaviour
     }
 
 
-    public void Move(float move, bool crouch, bool jump, bool double_jump)
+    public void Move(float move, bool crouch, bool jump, bool double_jump, bool dash)
     {
         // If crouching, check to see if the character can stand up
         if (!crouch)
@@ -110,7 +115,7 @@ public class Player_Movement: MonoBehaviour
             }
 
             // Move the character by finding the target velocity
-            Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+            Vector3 targetVelocity = new Vector2(dash_velo + (move * 10f), m_Rigidbody2D.velocity.y);
             // And then smoothing it out and applying it to the character
             m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
@@ -133,6 +138,7 @@ public class Player_Movement: MonoBehaviour
             // Add a vertical force to the player.
             m_Grounded = false;
             double_jump_used = false;
+            dash_used = false;
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
             double_jump_timer = 0;
         }
@@ -146,6 +152,29 @@ public class Player_Movement: MonoBehaviour
                 {
                     m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
                     double_jump_used = true;
+                }
+            }
+            if(!dash_used && dash)
+            {
+                dash_used = true;
+                float force = m_DashForce;
+                if(!m_FacingRight)
+                {
+                    force *= -1;
+                }
+                dash_velo = force;
+                dash_timer = dash_time;
+            }
+            else
+            {
+                if(dash_timer >= 0)
+                {
+                    dash_timer--;
+                }
+                else
+                {
+                    dash_velo = 0;
+                    dash_timer = -1;
                 }
             }
         }

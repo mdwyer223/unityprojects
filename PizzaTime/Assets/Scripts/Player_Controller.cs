@@ -14,7 +14,7 @@ public class Player_Controller : MonoBehaviour {
     protected bool jump = false;
     protected bool double_jump = false;
     protected bool double_jump_allowed = false;
-    protected bool jump_key_up = true;
+    protected bool dash = false;
 
     // Update is called once per frame
     void Update()
@@ -28,12 +28,18 @@ public class Player_Controller : MonoBehaviour {
             double_jump = true;
         }
 
+        if (Input.GetButtonDown("Dash"))
+        {
+            dash = true;
+        }
+
     }
 
     private void FixedUpdate()
     {
-        move_script.Move(horiz_move * Time.fixedDeltaTime, false, jump, double_jump);
+        move_script.Move(horiz_move * Time.fixedDeltaTime, false, jump, double_jump, dash);
         jump = false;
         double_jump = false;
+        dash = false;
     }
 }
